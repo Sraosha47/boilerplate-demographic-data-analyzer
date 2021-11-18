@@ -1,10 +1,10 @@
+from os import name
 import pandas as pd
 
 
 def calculate_demographic_data(print_data=True):
     # Read data from file
     df = pd.read_csv('adult.data.csv')
-    print(df)
     # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
     race_count = df['race'].value_counts()
     # What is the average age of men?
@@ -32,9 +32,9 @@ def calculate_demographic_data(print_data=True):
     rich_percentage = round((df.loc[(df['hours-per-week'] == min_work_hours) & (df['salary'] == '>50K')].value_counts().sum()/num_min_workers*100), 1)
 
     # What country has the highest percentage of people that earn >50K?
-    highest_earning_country = None
-    highest_earning_country_percentage = None
-
+    country_df=(pd.Series((df.loc[df['salary'] == '>50K', 'native-country'].value_counts())/(df['native-country'].value_counts())*100))
+    highest_earning_country =country_df.idxmax()
+    highest_earning_country_percentage = round((country_df.max()), 1)
     # Identify the most popular occupation for those who earn >50K in India.
     top_IN_occupation = None
 
@@ -65,4 +65,3 @@ def calculate_demographic_data(print_data=True):
         highest_earning_country_percentage,
         'top_IN_occupation': top_IN_occupation
     }
-calculate_demographic_data()
