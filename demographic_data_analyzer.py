@@ -9,18 +9,18 @@ def calculate_demographic_data(print_data=True):
     # What is the average age of men?
     average_age_men = round((df.loc[df['sex'] == 'Male', 'age'].mean()), 1)
     # What is the percentage of people who have a Bachelor's degree?
-    percentage_bachelors = round((df.loc[df['education'] == 'Bachelors'].value_counts().sum()/df['education'].value_counts().sum()*100), 1)
+    percentage_bachelors = round((df.loc[df['education'] == 'Bachelors'].value_counts().sum()/df.value_counts().sum()*100), 1)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
 
     # with and without `Bachelors`, `Masters`, or `Doctorate`
-    higher_education = None
-    lower_education = None
+    higher_education = df.loc[(df['education'] == 'Bachelors') | (df['education'] == 'Masters') | (df['education'] == 'Doctorate')]
+    lower_education = df.loc[(df['education'] != 'Bachelors') & (df['education'] != 'Masters') & (df['education'] != 'Doctorate')]
 
     # percentage with salary >50K
-    higher_education_rich = None
-    lower_education_rich = None
+    higher_education_rich = round((higher_education.loc[df['salary'] == '>50K'].value_counts().sum()/higher_education.value_counts().sum()*100), 1)
+    lower_education_rich = round((lower_education.loc[df['salary'] == '>50K'].value_counts().sum()/lower_education.value_counts().sum()*100), 1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = None
@@ -64,3 +64,4 @@ def calculate_demographic_data(print_data=True):
         highest_earning_country_percentage,
         'top_IN_occupation': top_IN_occupation
     }
+calculate_demographic_data()
